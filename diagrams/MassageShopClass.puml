@@ -1,0 +1,30 @@
+@startuml MassageShopService
+left to right direction
+package "Massa"{
+    class "<<Application>>\nMassage Shop\n Service" as MassageShopService{}
+
+    class "<<Resource>>\nMassage Shops" as ResourceShops{
+        <<GET>> +getShops():Shop
+        <<POST>> +createShop():Shop
+    }
+
+    class "<<Resource>>\nMassage Shop" as ResourceShop {
+        <<GET>> +getShop(): Shop
+        <<PUT>> +updateShop(): Shop
+        <<DELETE>> +deleteShop(): void
+    }
+
+    class "<<Representation>>\nMassage Shop" as RepresentationShop {
+        -name
+        -address
+        -tel 
+        -open/close time
+    }
+
+}
+
+MassageShopService ..> ResourceShops:"/shops\n<<Path>>"
+ResourceShops ..> ResourceShop: "/{shopID}\n<<Path>>"
+ResourceShop ..> RepresentationShop: "<<use>>"
+
+@enduml

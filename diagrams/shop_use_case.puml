@@ -1,0 +1,22 @@
+@startuml MassageShop System Use Case Diagram
+left to right direction
+actor "User" as user
+rectangle "Massage Reservation System" as MassageShopSystem {    
+    usecase "Register" as register
+    usecase "View\nMassage Shops" as viewShops
+    usecase "Edit\nReservation" as editResv
+    usecase "Manage\nShops" as manageShops
+}
+
+user -- register
+user -- viewShops
+user -- editResv
+
+actor "Admin" as admin
+register -- admin
+viewShops -- admin
+editResv -- admin
+manageShops -- admin
+
+
+@enduml
