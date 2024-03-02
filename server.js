@@ -16,7 +16,7 @@ const cors = require('cors');
 //====Routes======//
 const shops = require('./routes/shops');
 //const auth = require('./routes/auth');
-//const reservations = require('./routes/appointments);
+//const reservations = require('./routes/reservations);
 
 
 
