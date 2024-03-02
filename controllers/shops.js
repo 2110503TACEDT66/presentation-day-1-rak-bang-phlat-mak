@@ -82,10 +82,11 @@ exports.getShop = async (req,res,next) => {
         const shop = await Shop.findById(req.params.id);
 
         if (!shop) {
-            res.status(400).json({success: false, message: "there is no such shop"});
+            res.status(400).json({success: false, message: "There is no such shop."});
         }
 
-        res.status(200).json({success:true, 
+        res.status(200).json({
+            success:true, 
             data: shop});
     } catch (err) {
         res.status(400).json({success: false});
@@ -115,10 +116,12 @@ exports.updateShop = async (req,res,next) => {
             runValidators: true
         });
         if (!shop) {
-            res.status(400).json({success: false });
+            res.status(400).json({success: false});
         }
 
-        res.status(400).json({success: false});
+        res.status(400).json({
+            success: true,
+            data: shop});
     } catch (error) {
         res.status(400).json({success: false});
     }
@@ -132,10 +135,11 @@ exports.deleteShop = async (req, res, next) => {
         const shop = await Shop.findById(req.params.id);
 
         if (!shop) {
-            res.status(400).json({success: false});
+            res.status(400).json({success: false, msg: "There is no such shop."});
         }
 
         await shop.deleteOne();
+        res.status(200).json({success: true, msg: `${shop.name} has been deleted`});
     } catch (error) {
         res.status(400).json({success: false});
     }

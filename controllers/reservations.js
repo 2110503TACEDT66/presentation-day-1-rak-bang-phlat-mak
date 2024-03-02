@@ -15,7 +15,7 @@ exports.getReservations = async (req,res,next) => {
             select: 'name address tel openclose'
         });
     } else { //If you are an admin, you can see all
-        if (req.params.shopID) {
+        if (req.params.shopID) { //If looking for reservations in a specific shop
             console.log(req.params.shopID);
             query = Reservation.find({hospital: req.params.shopID}).populate({
                 path: 'shop',

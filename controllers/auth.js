@@ -80,7 +80,7 @@ exports.login = async (req, res, next) => {
         sendTokenResponse(user,200,res);
     } catch (error) {
         console.log(error);
-        res.status(500).json({successs: false, msg: "Cannot convert email or password to string"});
+        res.status(500).json({successs: false, msg: "It looks like you are attempting to do an sql injection."});
     }
 }
 
@@ -113,6 +113,8 @@ exports.getMe = async (req, res, next) => {
 //@route   GET /api/v1/auth/logout
 //@access  Private
 exports.logout = async(req,res,next) => {
+
+    //Clears cookie
     res.cookie('token', 'none', {
         expires: new Date(Date.now() + 10*1000),
         httpOnly: true
@@ -122,4 +124,4 @@ exports.logout = async(req,res,next) => {
         success: true,
         data: {}
     });
-}
+};

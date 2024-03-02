@@ -14,6 +14,6 @@ router.use('/:shopID/reservations/', reservationRouter);
 
 //Route to shop
 router.route('/').get(getShops).post(protect, authorize('admin'), createShop);
-router.route('/:id').get(protect, getShop).put(protect, authorize('admin'), updateShop).delete(protect, authorize('admin'), deleteShop);
+router.route('/:id').get(getShop).put(protect, authorize('admin'), updateShop).delete(protect, authorize('admin'), deleteShop);
 
 module.exports = router;
