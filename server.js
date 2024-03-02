@@ -15,8 +15,8 @@ const cors = require('cors');
 
 //====Routes======//
 const shops = require('./routes/shops');
-//const auth = require('./routes/auth');
-//const reservations = require('./routes/reservations);
+const auth = require('./routes/auth');
+const reservations = require('./routes/reservations');
 
 
 
@@ -41,8 +41,8 @@ app.use(cors());
 
 //=====Models======//
 app.use('/api/v1/shops', shops);
-//app.use('/api/v1/auth', auth);
-//app.use('/api/v1/reservations', reservations);
+app.use('/api/v1/auth', auth);
+app.use('/api/v1/reservations', reservations);
 app.use(cookieParser);
 
 const PORT = process.env.PORT || 5000;

@@ -33,7 +33,7 @@ exports.getShops = async (req,res,next) => {
         const sortBy = req.query.sort.split(',').join(' ');
         query = query.sort(sortBy);
     } else {
-        query = query.sort('-createdAt');
+        query = query.sort('name');
     }
 
     //Pagination
@@ -108,9 +108,9 @@ exports.createShop = async (req,res,next) => {
 //@desc     UPDATE a shop
 //@route    POST /api/v1/shops
 //@access   PRIVATE
-exports.createShop = async (req,res,next) => {
+exports.updateShop = async (req,res,next) => {
     try {    
-        const shop = await Shop.findByIdAndUpdaet(req.params.id, req.body, {
+        const shop = await Shop.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
             runValidators: true
         });
@@ -122,7 +122,7 @@ exports.createShop = async (req,res,next) => {
     } catch (error) {
         res.status(400).json({success: false});
     }
-} 
+};
 
 //@desc     DELETE a shop
 //@route    DELETE /api/v1/shops/:shopID
@@ -139,4 +139,4 @@ exports.deleteShop = async (req, res, next) => {
     } catch (error) {
         res.status(400).json({success: false});
     }
-}
+};

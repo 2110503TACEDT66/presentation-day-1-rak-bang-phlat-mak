@@ -18,7 +18,7 @@ const ShopSchema = new mongoose.Schema({
     openclose: {
         type: String,
         required: [true, 'Please add an open/close time']
-        }
+    }
 }, {
     toJSON: {virtuals: true},
     toObject: {virtuals: true}
