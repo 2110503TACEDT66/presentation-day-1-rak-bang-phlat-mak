@@ -100,7 +100,7 @@ exports.addReservation = async (req, res, next) => {
         
         if (isOpen) {
             const reservation = await Reservation.create(req.body);
-            res.status(200).json({
+            res.status(201).json({
                 success: true,
                 data: reservation
             });
