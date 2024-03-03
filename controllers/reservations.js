@@ -113,7 +113,7 @@ exports.addReservation = async (req, res, next) => {
        
     } catch (error) {
         console.log(error);
-        return res.status(500).json({success: false, message: "Cannot create reservation"});
+        return res.status(500).json({success: false, message: `Cannot create reservation because ${error}`});
     }
 }
 
@@ -167,7 +167,7 @@ exports.deleteReservation = async (req,res,next) => {
 
         await reservation.deleteOne();
 
-        res.status(200).json({success: true, data: {}});
+        res.status(200).json({success: true, data: {}, message: `User ${req.user.id}'s id has been deleted successfully`});
     } catch (error) {
         console.log(error);
         res.status(500).json({success: false, message: "Cannot delete reservation"});
