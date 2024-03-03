@@ -119,7 +119,7 @@ exports.updateShop = async (req,res,next) => {
             res.status(400).json({success: false});
         }
 
-        res.status(400).json({
+        res.status(200).json({
             success: true,
             data: shop});
     } catch (error) {
