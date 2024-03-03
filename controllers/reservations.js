@@ -1,5 +1,6 @@
 const Reservation = require('../models/Reservation');
 const Shop = require('../models/Shop');
+const {compareTimes} = require('../functions/dateTime.js');
 
 //@desc     get ALL reservations
 //@route    GET /api/v1/reservations
@@ -17,7 +18,7 @@ exports.getReservations = async (req,res,next) => {
     } else { //If you are an admin, you can see all
         if (req.params.shopID) { //If looking for reservations in a specific shop
             console.log(req.params.shopID);
-            query = Reservation.find({hospital: req.params.shopID}).populate({
+            query = Reservation.find({shop: req.params.shopID}).populate({
                 path: 'shop',
                 select: 'name address tel openclose'
             })
@@ -72,32 +73,46 @@ exports.addReservation = async (req, res, next) => {
     try {
         // Add user ID to req.body
         req.body.user = req.user.id;
-
+        console.log(req.body);
         //Check for existing reservation
         const existedReservation = await Reservation.find({user: req.user.id});
-
+        
         //If the user is not an admin, they can only create 3 queues
         if (existedReservation.length >= 3 && req.user.role !== 'admin') {
             return res.status(400).json({success: false, message: `The user with the id ${req.user.id} has already made 3 queues`});
         }
 
-        req.body.shop = req.params.shopID;
-
-        const shop = await Shop.findById(req.params.shopID);
+        const shop = await Shop.findById(req.body.shop);
 
         if (!shop) {
-            return res.status(404).json({success: false, message: `No shop with the id of ${req.params.shopID}`});
+            return res.status(404).json({success: false, message: `No shop with the id of ${req.body.shop}`});
         }
 
-        const reservation = await Reservation.create(req.body);
+        // Check if the time is before open or after close
+        const dateObj = new Date(req.body.resDate);
+        const hours = dateObj.getHours();
+        const minutes = dateObj.getMinutes();
+        const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        
+        // Compare times
+        const openClose = shop.openclose;
+        const isOpen = compareTimes(formattedTime, openClose);
+        
+        if (isOpen) {
+            const reservation = await Reservation.create(req.body);
+            res.status(200).json({
+                success: true,
+                data: reservation
+            });
 
-        res.status(200).json({
-            success: true,
-            data: reservation
-        });
+        } else {
+            res.status(400).json({
+                success: false, 
+                message: `The store's opening time is between ${openClose}`});
+        }
+       
     } catch (error) {
         console.log(error);
-
         return res.status(500).json({success: false, message: "Cannot create reservation"});
     }
 }
