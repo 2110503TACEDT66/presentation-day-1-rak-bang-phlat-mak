@@ -1,20 +1,20 @@
 @startuml MassageShopService
 left to right direction
-package "Massa"{
+package "Shop"{
     class "<<Application>>\nMassage Shop\n Service" as MassageShopService{}
 
-    class "<<Resource>>\nMassage Shops" as ResourceShops{
+    class "<<Resource>>\nShop" as ResourceShops{
         <<GET>> +getShops():Shop
         <<POST>> +createShop():Shop
     }
 
-    class "<<Resource>>\nMassage Shop" as ResourceShop {
+    class "<<Resource>>\n Shop" as ResourceShop {
         <<GET>> +getShop(): Shop
         <<PUT>> +updateShop(): Shop
         <<DELETE>> +deleteShop(): void
     }
 
-    class "<<Representation>>\nMassage Shop" as RepresentationShop {
+    class "<<Representation>>\nShop" as RepresentationShop {
         -name
         -address
         -tel 

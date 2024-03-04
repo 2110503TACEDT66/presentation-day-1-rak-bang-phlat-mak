@@ -1,0 +1,32 @@
+@startuml MassageShopService
+left to right direction
+package "Customer"{
+    class "<<Application>>\nMassage Shop\n Service" as MassageShopService{}
+
+    class "<<Resource>>\nReservation" as ResourceShops{
+        <<GET>> +getUsers():User
+        <<POST>> +createUser():User
+    }
+
+    class "<<Resource>>\nReservation" as ResourceShop {
+        <<GET>> +getUser(): User
+        <<PUT>> +updateUser(): User
+        <<DELETE>> +deleteUser(): void
+    }
+
+    class "<<Representation>>\nReservation" as RepresentationShop {
+        -name
+        -tel 
+        -email
+        -password
+        -role
+        -createdAt
+    }
+
+}
+
+MassageShopService ..> ResourceShops:"/auth\n<<Path>>"
+ResourceShops ..> ResourceShop: "/{userID}\n<<Path>>"
+ResourceShop ..> RepresentationShop: "<<use>>"
+
+@enduml
