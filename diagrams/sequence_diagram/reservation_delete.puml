@@ -1,0 +1,32 @@
+@startuml Reservation (DELETE)
+
+header Sameple Massage Shop Sequence Diagram
+footer Page %page% of %lastpage%
+title "Reservation (DELETE)"
+
+participant "Client" as client
+participant "<<javaScript>>\n:server" as server
+participant "<<router>>\n:reservations" as router
+participant "<<middleware>>\n:auth" as auth
+participant "<<controllers>>\n:reservations" as controller
+participant "<<model>>\n:Reservation" as model
+database "<<MongoDB>>\n:reservations" as shopdb
+
+client->server ++:req.delete('/reservations/:resID')
+server->router ++:app.use('/reservations',reservations)
+router -> auth ++: protect, authorize('user, admin')
+auth -> controller ++:deleteReservation()
+
+alt user.role != admin && user.id != reservation.user
+    controller -> client ++: response
+else The user is admin, or the user is the owner of the reservation
+    controller -> model ++: reservation.deleteOne()
+    model ->shopdb ++: query
+    shopdb --> model --: void
+    controller <-- model --:void
+    controller-> client --:response
+end 
+
+
+
+@enduml

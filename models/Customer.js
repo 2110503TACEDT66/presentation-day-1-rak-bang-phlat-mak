@@ -9,7 +9,8 @@ const CustomerSchema=new mongoose.Schema({
         required:[true,'Please add a name']
     },
     tel:{
-        type:String
+        type: String,
+        required: [true, 'Please add a number!']
     },
     email:{
         type:String,

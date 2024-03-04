@@ -1,0 +1,35 @@
+@startuml Reservation (GET)
+
+header Sameple Massage Shop Sequence Diagram
+footer Page %page% of %lastpage%
+title "Reservation (GET)"
+
+participant "Client" as client
+participant "<<javaScript>>\n:server" as server
+participant "<<router>>\n:reservations" as router
+participant "<<middleware>>\n:auth" as auth
+participant "<<controllers>>\n:reservations" as controller
+participant "<<model>>\n:Reservation" as model
+database "<<MongoDB>>\n:reservations" as shopdb
+
+client->server ++:req.put('/reservations')
+server->router ++:app.use('/reservations',reservations)
+router -> auth ++: protect, authorize('user, admin')
+auth -> controller ++:updateReservation()
+
+alt The user's role is admin
+    controller -> model ++: reservation.find()
+    model ->shopdb ++: query
+    shopdb --> model --: reservation
+    controller <-- model --: reservation
+    controller-> client --: response
+
+else The user's role is not admin
+    controller -> model ++: reservation.find({user: req.user.id})
+    model ->shopdb ++: query
+    shopdb --> model --: reservation
+    controller <-- model --: reservation
+    controller-> client --: response
+end
+
+@enduml
