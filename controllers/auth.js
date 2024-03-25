@@ -1,3 +1,4 @@
+const { CancellationToken } = require('mongodb');
 const Customer = require('../models/Customer');
 
 //@desc     token response
@@ -18,6 +19,9 @@ const sendTokenResponse = (user, StatusCode, res) => {
 
     res.status(StatusCode).cookie('token', token, options).json({
         success: true,
+        _id: user._id,
+        name: user.name,
+        email: user.email,
         token
     });
 }
@@ -77,8 +81,9 @@ exports.login = async (req, res, next) => {
         //Create token
         // const token = user.getSignedJwtToken();
         // res.status(200).json({success: true, token});
-        sendTokenResponse(user,200,res);
-    } catch (error) {
+        sendTokenResponse(user,200,res)
+
+        } catch (error) {
         console.log(error);
         res.status(500).json({successs: false, msg: "It looks like you are attempting to do an sql injection."});
     }
