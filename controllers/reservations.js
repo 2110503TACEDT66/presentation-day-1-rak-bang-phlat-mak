@@ -90,7 +90,7 @@ exports.addReservation = async (req, res, next) => {
 
         // Check if the time is before open or after close
         const dateObj = new Date(req.body.resDate);
-        const hours = dateObj.getHours();
+        const hours = dateObj.getHours() - 7;
         const minutes = dateObj.getMinutes();
         const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
         
@@ -108,7 +108,7 @@ exports.addReservation = async (req, res, next) => {
         } else {
             res.status(400).json({
                 success: false, 
-                message: `The store's opening time is between ${openClose}`});
+                message: `The store's opening time is between ${openClose} while your inputted time is ${formattedTime}`});
         }
        
     } catch (error) {
