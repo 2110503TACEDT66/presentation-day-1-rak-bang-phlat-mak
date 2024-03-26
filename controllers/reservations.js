@@ -90,7 +90,7 @@ exports.addReservation = async (req, res, next) => {
 
         // Check if the time is before open or after close
         const dateObj = new Date(req.body.resDate);
-        const hours = dateObj.getHours() - 7;
+        const hours = dateObj.getHours();
         const minutes = dateObj.getMinutes();
         const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
         
